@@ -5,6 +5,7 @@
 #include <QTimerEvent>
 #include <QTime>
 #include <QStyleFactory>
+#include <QDebug>
 
 ArrowClock::ArrowClock(QWidget *parent)
     : QMainWindow(parent)
@@ -12,7 +13,7 @@ ArrowClock::ArrowClock(QWidget *parent)
 {
     ui->setupUi(this);
     ui->menuBar->hide();
-    ui->gb_theme->hide();
+    theme_.hide();
     this->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, &QMainWindow::customContextMenuRequested,
             this, &ArrowClock::slotMenuRequested);
@@ -20,7 +21,8 @@ ArrowClock::ArrowClock(QWidget *parent)
     connect(&seconds_timer, &QTimer::timeout, this, &ArrowClock::startTicTack);
     connect(&seconds_timer, &QTimer::timeout, this, &ArrowClock::setTime);
     connect(ui->action_change_time, &QAction::triggered, this, &ArrowClock::showHideChangeTime);
-    connect(ui->action_dark_theme, &QAction::triggered, this, &ArrowClock::changeTheme);
+    connect(ui->action_dark_theme, &QAction::triggered, this, &ArrowClock::dialogTheme);
+    connect(&theme_, &DialogTheme::fW, this, &ArrowClock::changeTheme);
     showHideChangeTime();
     setLightTheme ();
 }
@@ -35,13 +37,14 @@ void ArrowClock::paintEvent (QPaintEvent *event) {
     QPen pen_second(QColorConstants::Svg::lightpink);
     QPen pen_minute(QColorConstants::Svg::lightskyblue);
     QPen pen_hour(QColorConstants::Svg::lightgreen);
-    if(ui->rb_light->isChecked()) {
+    if(theme_.ui->rb_light->isChecked()) {
+        setLightTheme();
         pen_second = QColorConstants::Svg::darkorange;
         pen_minute = QColorConstants::Svg::darkblue;
         pen_hour = QColorConstants::Svg::darkgreen;
 
-    } else if (ui->rb_dark->isChecked()){
-
+    } else if (theme_.ui->rb_dark->isChecked()){
+        setDarkTheme();
         pen_second = QColorConstants::Svg::lightpink;
         pen_minute = QColorConstants::Svg::lightskyblue;
         pen_hour = QColorConstants::Svg::lightgreen;
@@ -77,7 +80,7 @@ void ArrowClock::paintEvent (QPaintEvent *event) {
 
 void ArrowClock::drawClockFace (QPainter& painter, Point2D center) {
     for (int i = 1; i <= 12; i++) {
-        if (ui->rb_light->isChecked()) {
+        if (theme_.ui->rb_light->isChecked()) {
             painter.setPen(Qt::black);
             DrawDial(painter, center, (90.0 + 30.0 * i), 150.0);
             painter.setPen(Qt::lightGray);
@@ -165,11 +168,11 @@ void ArrowClock::showHideChangeTime() {
     }
 }
 
-void ArrowClock::changeTheme () {
+void ArrowClock::dialogTheme () {
     if (ui->action_dark_theme->isChecked()) {
-        ui->gb_theme->show();
+        theme_.show();
     } else {
-        ui->gb_theme->hide();
+        theme_.hide();
     }
 }
 
@@ -200,14 +203,7 @@ void ArrowClock::setLightTheme () {
     qApp->setPalette(lightPalette);
 }
 
-void ArrowClock::on_rb_light_clicked()
-{
-    setLightTheme ();
-}
-
-
-void ArrowClock::on_rb_dark_clicked()
-{
+void ArrowClock::setDarkTheme () {
     QPalette darkPalette;
     darkPalette.setColor(QPalette::Window, QColor(53, 53, 53));
     darkPalette.setColor(QPalette::WindowText, Qt::white);
@@ -226,6 +222,15 @@ void ArrowClock::on_rb_dark_clicked()
     qApp->setPalette(darkPalette);
 }
 
+void ArrowClock::changeTheme () {
+    if (theme_.ui->rb_dark->isChecked()) {
+        setDarkTheme();
+        ui->action_dark_theme->setChecked(false);
+    } else {
+        setLightTheme ();
+        ui->action_dark_theme->setChecked(false);
+    }
+}
 
 void ArrowClock::on_sb_hours_valueChanged(int arg1)
 {

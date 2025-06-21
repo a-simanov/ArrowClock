@@ -1,6 +1,9 @@
 #ifndef ARROWCLOCK_H
 #define ARROWCLOCK_H
 
+#include "dialogtheme.h"
+#include "ui_dialogtheme.h"
+
 #include <QMainWindow>
 #include <QPainter>
 #include <QTimer>
@@ -55,7 +58,7 @@ public:
 
     ~ArrowClock();
 
-
+    friend class DialogTheme;
 
     void startTicTack ();
 private:
@@ -66,6 +69,7 @@ private:
     int user_min = 1;
     int user_hour = 0;
     QTime now_;
+    DialogTheme theme_;
 
 private:
     Ui::ArrowClock *ui;
@@ -81,13 +85,13 @@ private:
     void drawNumbers (QPainter& painter, double x , double y);
     void drawClockFace (QPainter& painter, Point2D center);
     void setLightTheme ();
+    void setDarkTheme ();
+    void changeTheme ();
 
 private slots:
     void showHideChangeTime();
     void slotMenuRequested(QPoint pos);
-    void changeTheme ();
-    void on_rb_light_clicked();
-    void on_rb_dark_clicked();
+    void dialogTheme ();
     void on_sb_hours_valueChanged(int arg1);
     void on_sb_minutes_valueChanged(int arg1);
     void on_sb_seconds_valueChanged(int arg1);
