@@ -13,17 +13,21 @@ ArrowClock::ArrowClock(QWidget *parent)
 {
     ui->setupUi(this);
     ui->menuBar->hide();
-    theme_.hide();
     this->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, &QMainWindow::customContextMenuRequested,
             this, &ArrowClock::slotMenuRequested);
     seconds_timer.start(1000);
     connect(&seconds_timer, &QTimer::timeout, this, &ArrowClock::startTicTack);
     connect(&seconds_timer, &QTimer::timeout, this, &ArrowClock::setTime);
+    connect(&alarm_timer_, &QTimer::timeout, this, &ArrowClock::close);
     connect(ui->action_change_time, &QAction::triggered, this, &ArrowClock::showHideChangeTime);
     connect(ui->action_dark_theme, &QAction::triggered, this, &ArrowClock::dialogTheme);
+    connect(ui->action_setAlarm, &QAction::triggered, this, &ArrowClock::dialogAlarm);
     connect(&theme_, &DialogTheme::fW, this, &ArrowClock::changeTheme);
-    showHideChangeTime();
+    connect(&user_time_, &DialogUserTrime::uT, this, &ArrowClock::changeTime);
+    connect(&alarm_, &DialogAlarm::getAlarm, this, &ArrowClock::setAlarm);
+    theme_.hide();
+    user_time_.hide();
     setLightTheme ();
 }
 
@@ -57,19 +61,19 @@ void ArrowClock::paintEvent (QPaintEvent *event) {
     Point2D center_ {width()/2.0, height()/2.0};
     double center_x = width()/2;
     double center_y = height()/2;
-    if(ui->cb_set_time->isChecked()) {
+    if(is_user_time_) {
         DrawSecondsArrow (painter, center_, getSecondsAngle(now_), LENGTH_SECOND_ARROW);
     } else {
         DrawSecondsArrow (painter, center_, getSecondsAngle(), LENGTH_SECOND_ARROW);
     }
     painter.setPen(pen_minute);
-    if(ui->cb_set_time->isChecked()) {
+    if(is_user_time_) {
         DrawMinutesArrow(painter, center_, getMinutesAngle(now_), LENGTH_MINUTE_ARROW);
     } else {
         DrawMinutesArrow(painter, center_, getMinutesAngle(), LENGTH_MINUTE_ARROW);
     }
     painter.setPen(pen_hour);
-    if(ui->cb_set_time->isChecked()) {
+    if(is_user_time_) {
         DrawHourArrow(painter, center_, getHourAngle(now_), LENGTH_HOUR_ARROW);
     } else {
         DrawHourArrow(painter, center_, getHourAngle(), LENGTH_HOUR_ARROW);
@@ -149,31 +153,11 @@ void ArrowClock::DrawDial(QPainter& painter, Point2D center, double angle, doubl
 }
 
 void ArrowClock::showHideChangeTime() {
-    if (ui->action_change_time->isChecked()) {
-        ui->sb_seconds->show();
-        ui->sb_minutes->show();
-        ui->sb_hours->show();
-        ui->lbl_h->show();
-        ui->lbl_m->show();
-        ui->lbl_s->show();
-        ui->cb_set_time->show();
-    } else {
-        ui->sb_seconds->hide();
-        ui->sb_minutes->hide();
-        ui->sb_hours->hide();
-        ui->lbl_h->hide();
-        ui->lbl_m->hide();
-        ui->lbl_s->hide();
-        ui->cb_set_time->hide();
-    }
+    user_time_.show();
 }
 
 void ArrowClock::dialogTheme () {
-    if (ui->action_dark_theme->isChecked()) {
-        theme_.show();
-    } else {
-        theme_.hide();
-    }
+    theme_.show();
 }
 
 void ArrowClock::slotMenuRequested(QPoint pos) {
@@ -225,31 +209,33 @@ void ArrowClock::setDarkTheme () {
 void ArrowClock::changeTheme () {
     if (theme_.ui->rb_dark->isChecked()) {
         setDarkTheme();
-        ui->action_dark_theme->setChecked(false);
     } else {
         setLightTheme ();
-        ui->action_dark_theme->setChecked(false);
     }
 }
 
-void ArrowClock::on_sb_hours_valueChanged(int arg1)
-{
-    user_hour = arg1;
-    now_.setHMS(user_hour, user_min, user_sec);
+void ArrowClock::changeTime () {
+    now_.setHMS(user_time_.user_hour, user_time_.user_min, user_time_.user_sec);
+    is_user_time_ = true;
 }
 
-
-void ArrowClock::on_sb_minutes_valueChanged(int arg1)
-{
-    user_min = arg1;
-    now_.setHMS(user_hour, user_min, user_sec);
+void ArrowClock::dialogAlarm() {
+    alarm_.show();
 }
 
-
-void ArrowClock::on_sb_seconds_valueChanged(int arg1)
-{
-    user_sec = arg1;
-    now_.setHMS(user_hour, user_min, user_sec);
+void ArrowClock::setAlarm () {
+    QTime alarm_time = alarm_.getAlarmTime();
+    QTime now;
+    if (QTime::currentTime().hour() > 12) {
+        now = QTime::currentTime().addSecs(-60 * 60 * 12);
+    } else {
+        now = QTime::currentTime();
+    }
+    auto elapsed = now.secsTo(alarm_time);
+    alarm_timer_.start(elapsed * 1000);
+    alarm_timer_.setSingleShot(true);
+    qDebug() << elapsed;
+    qDebug() << alarm_time;
+    qDebug() << now;
 }
-
 

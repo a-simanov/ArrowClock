@@ -26,17 +26,13 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 namespace {
 struct qt_meta_stringdata_ArrowClock_t {
-    uint offsetsAndSizes[20];
+    uint offsetsAndSizes[12];
     char stringdata0[11];
     char stringdata1[19];
     char stringdata2[1];
     char stringdata3[18];
     char stringdata4[4];
     char stringdata5[12];
-    char stringdata6[25];
-    char stringdata7[5];
-    char stringdata8[27];
-    char stringdata9[27];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(sizeof(qt_meta_stringdata_ArrowClock_t::offsetsAndSizes) + ofs), len 
@@ -47,22 +43,14 @@ Q_CONSTINIT static const qt_meta_stringdata_ArrowClock_t qt_meta_stringdata_Arro
         QT_MOC_LITERAL(30, 0),  // ""
         QT_MOC_LITERAL(31, 17),  // "slotMenuRequested"
         QT_MOC_LITERAL(49, 3),  // "pos"
-        QT_MOC_LITERAL(53, 11),  // "dialogTheme"
-        QT_MOC_LITERAL(65, 24),  // "on_sb_hours_valueChanged"
-        QT_MOC_LITERAL(90, 4),  // "arg1"
-        QT_MOC_LITERAL(95, 26),  // "on_sb_minutes_valueChanged"
-        QT_MOC_LITERAL(122, 26)   // "on_sb_seconds_valueChanged"
+        QT_MOC_LITERAL(53, 11)   // "dialogTheme"
     },
     "ArrowClock",
     "showHideChangeTime",
     "",
     "slotMenuRequested",
     "pos",
-    "dialogTheme",
-    "on_sb_hours_valueChanged",
-    "arg1",
-    "on_sb_minutes_valueChanged",
-    "on_sb_seconds_valueChanged"
+    "dialogTheme"
 };
 #undef QT_MOC_LITERAL
 } // unnamed namespace
@@ -73,7 +61,7 @@ Q_CONSTINIT static const uint qt_meta_data_ArrowClock[] = {
       10,       // revision
        0,       // classname
        0,    0, // classinfo
-       6,   14, // methods
+       3,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -81,20 +69,14 @@ Q_CONSTINIT static const uint qt_meta_data_ArrowClock[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    0,   50,    2, 0x08,    1 /* Private */,
-       3,    1,   51,    2, 0x08,    2 /* Private */,
-       5,    0,   54,    2, 0x08,    4 /* Private */,
-       6,    1,   55,    2, 0x08,    5 /* Private */,
-       8,    1,   58,    2, 0x08,    7 /* Private */,
-       9,    1,   61,    2, 0x08,    9 /* Private */,
+       1,    0,   32,    2, 0x08,    1 /* Private */,
+       3,    1,   33,    2, 0x08,    2 /* Private */,
+       5,    0,   36,    2, 0x08,    4 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
     QMetaType::Void, QMetaType::QPoint,    4,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::Int,    7,
-    QMetaType::Void, QMetaType::Int,    7,
-    QMetaType::Void, QMetaType::Int,    7,
 
        0        // eod
 };
@@ -114,16 +96,7 @@ Q_CONSTINIT const QMetaObject ArrowClock::staticMetaObject = { {
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         QtPrivate::TypeAndForceComplete<QPoint, std::false_type>,
         // method 'dialogTheme'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'on_sb_hours_valueChanged'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        QtPrivate::TypeAndForceComplete<int, std::false_type>,
-        // method 'on_sb_minutes_valueChanged'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        QtPrivate::TypeAndForceComplete<int, std::false_type>,
-        // method 'on_sb_seconds_valueChanged'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        QtPrivate::TypeAndForceComplete<int, std::false_type>
+        QtPrivate::TypeAndForceComplete<void, std::false_type>
     >,
     nullptr
 } };
@@ -137,9 +110,6 @@ void ArrowClock::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 0: _t->showHideChangeTime(); break;
         case 1: _t->slotMenuRequested((*reinterpret_cast< std::add_pointer_t<QPoint>>(_a[1]))); break;
         case 2: _t->dialogTheme(); break;
-        case 3: _t->on_sb_hours_valueChanged((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
-        case 4: _t->on_sb_minutes_valueChanged((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
-        case 5: _t->on_sb_seconds_valueChanged((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
         default: ;
         }
     }
@@ -164,13 +134,13 @@ int ArrowClock::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 6)
+        if (_id < 3)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 6;
+        _id -= 3;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 6)
+        if (_id < 3)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 6;
+        _id -= 3;
     }
     return _id;
 }

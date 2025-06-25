@@ -3,6 +3,8 @@
 
 #include "dialogtheme.h"
 #include "ui_dialogtheme.h"
+#include "dialogusertrime.h"
+#include "dialogalarm.h"
 
 #include <QMainWindow>
 #include <QPainter>
@@ -70,6 +72,10 @@ private:
     int user_hour = 0;
     QTime now_;
     DialogTheme theme_;
+    bool is_user_time_ = false;
+    DialogUserTrime user_time_;
+    DialogAlarm alarm_;
+    QTimer alarm_timer_{this};
 
 private:
     Ui::ArrowClock *ui;
@@ -87,13 +93,13 @@ private:
     void setLightTheme ();
     void setDarkTheme ();
     void changeTheme ();
+    void changeTime ();
+    void dialogAlarm();
+    void setAlarm ();
 
 private slots:
     void showHideChangeTime();
     void slotMenuRequested(QPoint pos);
     void dialogTheme ();
-    void on_sb_hours_valueChanged(int arg1);
-    void on_sb_minutes_valueChanged(int arg1);
-    void on_sb_seconds_valueChanged(int arg1);
 };
 #endif // ARROWCLOCK_H

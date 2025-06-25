@@ -52,15 +52,23 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../../dialogtheme.cpp \
+SOURCES       = ../../dialogalarm.cpp \
+		../../dialogtheme.cpp \
+		../../dialogusertrime.cpp \
 		../../main.cpp \
 		../../arrowclock.cpp moc_arrowclock.cpp \
-		moc_dialogtheme.cpp
-OBJECTS       = dialogtheme.o \
+		moc_dialogalarm.cpp \
+		moc_dialogtheme.cpp \
+		moc_dialogusertrime.cpp
+OBJECTS       = dialogalarm.o \
+		dialogtheme.o \
+		dialogusertrime.o \
 		main.o \
 		arrowclock.o \
 		moc_arrowclock.o \
-		moc_dialogtheme.o
+		moc_dialogalarm.o \
+		moc_dialogtheme.o \
+		moc_dialogusertrime.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/common/linux.conf \
@@ -128,7 +136,11 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/lex.prf \
 		../../../../Clock.pro ../../arrowclock.h \
-		../../dialogtheme.h ../../dialogtheme.cpp \
+		../../dialogalarm.h \
+		../../dialogtheme.h \
+		../../dialogusertrime.h ../../dialogalarm.cpp \
+		../../dialogtheme.cpp \
+		../../dialogusertrime.cpp \
 		../../main.cpp \
 		../../arrowclock.cpp
 QMAKE_TARGET  = Clock
@@ -139,7 +151,7 @@ TARGET        = Clock
 first: all
 ####### Build rules
 
-Clock: ui_arrowclock.h ui_dialogtheme.h $(OBJECTS)  
+Clock: ui_arrowclock.h ui_dialogalarm.h ui_dialogtheme.h ui_dialogusertrime.h $(OBJECTS)  
 	$(LINK) $(LFLAGS) -o $(TARGET)  $(OBJECTS) $(OBJCOMP) $(LIBS)
 
 Makefile: ../../Clock.pro /usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++/qmake.conf /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/spec_pre.prf \
@@ -298,9 +310,9 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../../arrowclock.h ../../dialogtheme.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../../dialogtheme.cpp ../../main.cpp ../../arrowclock.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../../arrowclock.ui ../../dialogtheme.ui $(DISTDIR)/
+	$(COPY_FILE) --parents ../../arrowclock.h ../../dialogalarm.h ../../dialogtheme.h ../../dialogusertrime.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../../dialogalarm.cpp ../../dialogtheme.cpp ../../dialogusertrime.cpp ../../main.cpp ../../arrowclock.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../../arrowclock.ui ../../dialogalarm.ui ../../dialogtheme.ui ../../dialogusertrime.ui $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -332,37 +344,55 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/data/dummy.cpp
 	g++ -pipe -g -std=gnu++2a -Wall -Wextra -fPIC -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_arrowclock.cpp moc_dialogtheme.cpp
+compiler_moc_header_make_all: moc_arrowclock.cpp moc_dialogalarm.cpp moc_dialogtheme.cpp moc_dialogusertrime.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_arrowclock.cpp moc_dialogtheme.cpp
+	-$(DEL_FILE) moc_arrowclock.cpp moc_dialogalarm.cpp moc_dialogtheme.cpp moc_dialogusertrime.cpp
 moc_arrowclock.cpp: ../../arrowclock.h \
 		../../dialogtheme.h \
-		ui_arrowclock.h \
 		ui_dialogtheme.h \
+		../../dialogusertrime.h \
+		../../dialogalarm.h \
 		moc_predefs.h \
 		/usr/lib/qt6/libexec/moc
 	/usr/lib/qt6/libexec/moc $(DEFINES) --include /home/artem/Project/ArrowClock/build/Desktop-Debug/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++ -I/home/artem/Project/ArrowClock -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtWidgets -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I. -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../../arrowclock.h -o moc_arrowclock.cpp
 
+moc_dialogalarm.cpp: ../../dialogalarm.h \
+		moc_predefs.h \
+		/usr/lib/qt6/libexec/moc
+	/usr/lib/qt6/libexec/moc $(DEFINES) --include /home/artem/Project/ArrowClock/build/Desktop-Debug/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++ -I/home/artem/Project/ArrowClock -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtWidgets -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I. -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../../dialogalarm.h -o moc_dialogalarm.cpp
+
 moc_dialogtheme.cpp: ../../dialogtheme.h \
-		ui_arrowclock.h \
 		moc_predefs.h \
 		/usr/lib/qt6/libexec/moc
 	/usr/lib/qt6/libexec/moc $(DEFINES) --include /home/artem/Project/ArrowClock/build/Desktop-Debug/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++ -I/home/artem/Project/ArrowClock -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtWidgets -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I. -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../../dialogtheme.h -o moc_dialogtheme.cpp
+
+moc_dialogusertrime.cpp: ../../dialogusertrime.h \
+		moc_predefs.h \
+		/usr/lib/qt6/libexec/moc
+	/usr/lib/qt6/libexec/moc $(DEFINES) --include /home/artem/Project/ArrowClock/build/Desktop-Debug/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++ -I/home/artem/Project/ArrowClock -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtWidgets -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I. -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../../dialogusertrime.h -o moc_dialogusertrime.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
-compiler_uic_make_all: ui_arrowclock.h ui_dialogtheme.h
+compiler_uic_make_all: ui_arrowclock.h ui_dialogalarm.h ui_dialogtheme.h ui_dialogusertrime.h
 compiler_uic_clean:
-	-$(DEL_FILE) ui_arrowclock.h ui_dialogtheme.h
+	-$(DEL_FILE) ui_arrowclock.h ui_dialogalarm.h ui_dialogtheme.h ui_dialogusertrime.h
 ui_arrowclock.h: ../../arrowclock.ui \
 		/usr/lib/qt6/libexec/uic
 	/usr/lib/qt6/libexec/uic ../../arrowclock.ui -o ui_arrowclock.h
 
+ui_dialogalarm.h: ../../dialogalarm.ui \
+		/usr/lib/qt6/libexec/uic
+	/usr/lib/qt6/libexec/uic ../../dialogalarm.ui -o ui_dialogalarm.h
+
 ui_dialogtheme.h: ../../dialogtheme.ui \
 		/usr/lib/qt6/libexec/uic
 	/usr/lib/qt6/libexec/uic ../../dialogtheme.ui -o ui_dialogtheme.h
+
+ui_dialogusertrime.h: ../../dialogusertrime.ui \
+		/usr/lib/qt6/libexec/uic
+	/usr/lib/qt6/libexec/uic ../../dialogusertrime.ui -o ui_dialogusertrime.h
 
 compiler_yacc_decl_make_all:
 compiler_yacc_decl_clean:
@@ -374,28 +404,44 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_ui
 
 ####### Compile
 
+dialogalarm.o: ../../dialogalarm.cpp ../../dialogalarm.h \
+		ui_dialogalarm.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dialogalarm.o ../../dialogalarm.cpp
+
 dialogtheme.o: ../../dialogtheme.cpp ../../dialogtheme.h \
-		ui_arrowclock.h \
 		ui_dialogtheme.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dialogtheme.o ../../dialogtheme.cpp
 
+dialogusertrime.o: ../../dialogusertrime.cpp ../../dialogusertrime.h \
+		ui_dialogusertrime.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dialogusertrime.o ../../dialogusertrime.cpp
+
 main.o: ../../main.cpp ../../arrowclock.h \
 		../../dialogtheme.h \
-		ui_arrowclock.h \
-		ui_dialogtheme.h
+		ui_dialogtheme.h \
+		../../dialogusertrime.h \
+		../../dialogalarm.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../../main.cpp
 
 arrowclock.o: ../../arrowclock.cpp ../../arrowclock.h \
 		../../dialogtheme.h \
-		ui_arrowclock.h \
-		ui_dialogtheme.h
+		ui_dialogtheme.h \
+		../../dialogusertrime.h \
+		../../dialogalarm.h \
+		ui_arrowclock.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o arrowclock.o ../../arrowclock.cpp
 
 moc_arrowclock.o: moc_arrowclock.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_arrowclock.o moc_arrowclock.cpp
 
+moc_dialogalarm.o: moc_dialogalarm.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_dialogalarm.o moc_dialogalarm.cpp
+
 moc_dialogtheme.o: moc_dialogtheme.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_dialogtheme.o moc_dialogtheme.cpp
+
+moc_dialogusertrime.o: moc_dialogusertrime.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_dialogusertrime.o moc_dialogusertrime.cpp
 
 ####### Install
 

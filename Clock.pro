@@ -9,17 +9,23 @@ CONFIG += c++20
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    dialogalarm.cpp \
     dialogtheme.cpp \
+    dialogusertrime.cpp \
     main.cpp \
     arrowclock.cpp
 
 HEADERS += \
     arrowclock.h \
-    dialogtheme.h
+    dialogalarm.h \
+    dialogtheme.h \
+    dialogusertrime.h
 
 FORMS += \
     arrowclock.ui \
-    dialogtheme.ui
+    dialogalarm.ui \
+    dialogtheme.ui \
+    dialogusertrime.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
