@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QTime>
+#include <QFileDialog>
 
 namespace Ui {
 class DialogAlarm;
@@ -19,15 +20,22 @@ public:
         return alarm_time_;
     };
 
+    QString getMelody() {
+        return melody_;
+    }
+
 signals:
     void getAlarm();
 
 private slots:
     void on_buttonBox_accepted();
 
+    void on_btn_change_melody_clicked();
+
 private:
     Ui::DialogAlarm *ui;
     QTime alarm_time_;
+    QString melody_;
 };
 
 #endif // DIALOGALARM_H

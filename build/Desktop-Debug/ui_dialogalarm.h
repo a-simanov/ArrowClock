@@ -17,6 +17,7 @@
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QVBoxLayout>
@@ -27,7 +28,6 @@ class Ui_DialogAlarm
 {
 public:
     QGridLayout *gridLayout;
-    QDialogButtonBox *buttonBox;
     QHBoxLayout *horizontalLayout;
     QVBoxLayout *verticalLayout;
     QLabel *lbl_s;
@@ -38,7 +38,9 @@ public:
     QVBoxLayout *verticalLayout_3;
     QLabel *lbl_h;
     QSpinBox *sb_alarm_hours;
+    QDialogButtonBox *buttonBox;
     QSpacerItem *verticalSpacer;
+    QPushButton *btn_change_melody;
 
     void setupUi(QDialog *DialogAlarm)
     {
@@ -47,13 +49,6 @@ public:
         DialogAlarm->resize(400, 300);
         gridLayout = new QGridLayout(DialogAlarm);
         gridLayout->setObjectName("gridLayout");
-        buttonBox = new QDialogButtonBox(DialogAlarm);
-        buttonBox->setObjectName("buttonBox");
-        buttonBox->setOrientation(Qt::Horizontal);
-        buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
-
-        gridLayout->addWidget(buttonBox, 2, 0, 1, 1);
-
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName("horizontalLayout");
         verticalLayout = new QVBoxLayout();
@@ -110,9 +105,21 @@ public:
 
         gridLayout->addLayout(horizontalLayout, 0, 0, 1, 1);
 
+        buttonBox = new QDialogButtonBox(DialogAlarm);
+        buttonBox->setObjectName("buttonBox");
+        buttonBox->setOrientation(Qt::Horizontal);
+        buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
+
+        gridLayout->addWidget(buttonBox, 3, 0, 1, 1);
+
         verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         gridLayout->addItem(verticalSpacer, 1, 0, 1, 1);
+
+        btn_change_melody = new QPushButton(DialogAlarm);
+        btn_change_melody->setObjectName("btn_change_melody");
+
+        gridLayout->addWidget(btn_change_melody, 2, 0, 1, 1);
 
 
         retranslateUi(DialogAlarm);
@@ -128,6 +135,7 @@ public:
         lbl_s->setText(QCoreApplication::translate("DialogAlarm", "\320\222\320\262\320\265\320\264\320\270\321\202\320\265 \321\201\320\265\320\272\321\203\320\275\320\264\321\213", nullptr));
         lbl_m->setText(QCoreApplication::translate("DialogAlarm", "\320\222\320\262\320\265\320\264\320\270\321\202\320\265 \320\274\320\270\320\275\321\203\321\202\321\213", nullptr));
         lbl_h->setText(QCoreApplication::translate("DialogAlarm", "\320\222\320\262\320\265\320\264\320\270\321\202\320\265 \321\207\320\260\321\201\321\213", nullptr));
+        btn_change_melody->setText(QCoreApplication::translate("DialogAlarm", "\320\222\321\213\320\261\320\265\321\200\320\270\321\202\320\265 \321\201\320\270\320\263\320\275\320\260\320\273 \320\261\321\203\320\264\320\270\320\273\321\214\320\275\320\270\320\272\320\260", nullptr));
     } // retranslateUi
 
 };

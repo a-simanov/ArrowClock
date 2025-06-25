@@ -19,3 +19,10 @@ void DialogAlarm::on_buttonBox_accepted()
     emit getAlarm();
 }
 
+
+void DialogAlarm::on_btn_change_melody_clicked()
+{
+    melody_ = QFileDialog::getOpenFileName(this, QString("Выберите мелодию"), QDir::currentPath(), "*");
+    ui->btn_change_melody->setText(melody_);
+}
+

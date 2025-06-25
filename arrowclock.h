@@ -11,6 +11,8 @@
 #include <QTimer>
 #include <QFile>
 #include <QTime>
+#include <QMediaPlayer>
+#include <QAudioOutput>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -76,6 +78,8 @@ private:
     DialogUserTrime user_time_;
     DialogAlarm alarm_;
     QTimer alarm_timer_{this};
+    QMediaPlayer player_{this};
+    QAudioOutput audio_output_{this};
 
 private:
     Ui::ArrowClock *ui;
@@ -96,10 +100,12 @@ private:
     void changeTime ();
     void dialogAlarm();
     void setAlarm ();
+    void timerAlarm();
 
 private slots:
     void showHideChangeTime();
     void slotMenuRequested(QPoint pos);
     void dialogTheme ();
+    void on_btn_stop_alarm_clicked();
 };
 #endif // ARROWCLOCK_H

@@ -28,6 +28,13 @@
       </property>
      </spacer>
     </item>
+    <item row="1" column="0">
+     <widget class="QPushButton" name="btn_stop_alarm">
+      <property name="text">
+       <string>Остановить будильник</string>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>

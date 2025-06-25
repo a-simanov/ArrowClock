@@ -10,16 +10,17 @@
 ArrowClock::ArrowClock(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::ArrowClock)
-{
+{    
     ui->setupUi(this);
     ui->menuBar->hide();
+    ui->btn_stop_alarm->hide();
     this->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, &QMainWindow::customContextMenuRequested,
             this, &ArrowClock::slotMenuRequested);
     seconds_timer.start(1000);
     connect(&seconds_timer, &QTimer::timeout, this, &ArrowClock::startTicTack);
     connect(&seconds_timer, &QTimer::timeout, this, &ArrowClock::setTime);
-    connect(&alarm_timer_, &QTimer::timeout, this, &ArrowClock::close);
+    connect(&alarm_timer_, &QTimer::timeout, this, &ArrowClock::timerAlarm);
     connect(ui->action_change_time, &QAction::triggered, this, &ArrowClock::showHideChangeTime);
     connect(ui->action_dark_theme, &QAction::triggered, this, &ArrowClock::dialogTheme);
     connect(ui->action_setAlarm, &QAction::triggered, this, &ArrowClock::dialogAlarm);
@@ -29,6 +30,8 @@ ArrowClock::ArrowClock(QWidget *parent)
     theme_.hide();
     user_time_.hide();
     setLightTheme ();
+    player_.setAudioOutput(&audio_output_);
+    audio_output_.setVolume(1.f);
 }
 
 ArrowClock::~ArrowClock()
@@ -234,8 +237,18 @@ void ArrowClock::setAlarm () {
     auto elapsed = now.secsTo(alarm_time);
     alarm_timer_.start(elapsed * 1000);
     alarm_timer_.setSingleShot(true);
-    qDebug() << elapsed;
-    qDebug() << alarm_time;
-    qDebug() << now;
+}
+
+void ArrowClock::timerAlarm() {
+    player_.setSource(alarm_.getMelody());
+    player_.play();
+    ui->btn_stop_alarm->show();
+}
+
+
+void ArrowClock::on_btn_stop_alarm_clicked()
+{
+    player_.stop();
+    ui->btn_stop_alarm->hide();
 }
 

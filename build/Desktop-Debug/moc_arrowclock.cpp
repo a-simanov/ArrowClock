@@ -26,13 +26,14 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 namespace {
 struct qt_meta_stringdata_ArrowClock_t {
-    uint offsetsAndSizes[12];
+    uint offsetsAndSizes[14];
     char stringdata0[11];
     char stringdata1[19];
     char stringdata2[1];
     char stringdata3[18];
     char stringdata4[4];
     char stringdata5[12];
+    char stringdata6[26];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(sizeof(qt_meta_stringdata_ArrowClock_t::offsetsAndSizes) + ofs), len 
@@ -43,14 +44,16 @@ Q_CONSTINIT static const qt_meta_stringdata_ArrowClock_t qt_meta_stringdata_Arro
         QT_MOC_LITERAL(30, 0),  // ""
         QT_MOC_LITERAL(31, 17),  // "slotMenuRequested"
         QT_MOC_LITERAL(49, 3),  // "pos"
-        QT_MOC_LITERAL(53, 11)   // "dialogTheme"
+        QT_MOC_LITERAL(53, 11),  // "dialogTheme"
+        QT_MOC_LITERAL(65, 25)   // "on_btn_stop_alarm_clicked"
     },
     "ArrowClock",
     "showHideChangeTime",
     "",
     "slotMenuRequested",
     "pos",
-    "dialogTheme"
+    "dialogTheme",
+    "on_btn_stop_alarm_clicked"
 };
 #undef QT_MOC_LITERAL
 } // unnamed namespace
@@ -61,7 +64,7 @@ Q_CONSTINIT static const uint qt_meta_data_ArrowClock[] = {
       10,       // revision
        0,       // classname
        0,    0, // classinfo
-       3,   14, // methods
+       4,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -69,13 +72,15 @@ Q_CONSTINIT static const uint qt_meta_data_ArrowClock[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    0,   32,    2, 0x08,    1 /* Private */,
-       3,    1,   33,    2, 0x08,    2 /* Private */,
-       5,    0,   36,    2, 0x08,    4 /* Private */,
+       1,    0,   38,    2, 0x08,    1 /* Private */,
+       3,    1,   39,    2, 0x08,    2 /* Private */,
+       5,    0,   42,    2, 0x08,    4 /* Private */,
+       6,    0,   43,    2, 0x08,    5 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
     QMetaType::Void, QMetaType::QPoint,    4,
+    QMetaType::Void,
     QMetaType::Void,
 
        0        // eod
@@ -96,6 +101,8 @@ Q_CONSTINIT const QMetaObject ArrowClock::staticMetaObject = { {
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         QtPrivate::TypeAndForceComplete<QPoint, std::false_type>,
         // method 'dialogTheme'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'on_btn_stop_alarm_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>
     >,
     nullptr
@@ -110,6 +117,7 @@ void ArrowClock::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 0: _t->showHideChangeTime(); break;
         case 1: _t->slotMenuRequested((*reinterpret_cast< std::add_pointer_t<QPoint>>(_a[1]))); break;
         case 2: _t->dialogTheme(); break;
+        case 3: _t->on_btn_stop_alarm_clicked(); break;
         default: ;
         }
     }
@@ -134,13 +142,13 @@ int ArrowClock::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 3)
+        if (_id < 4)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 3;
+        _id -= 4;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 3)
+        if (_id < 4)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 3;
+        _id -= 4;
     }
     return _id;
 }
