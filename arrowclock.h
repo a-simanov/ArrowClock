@@ -80,6 +80,7 @@ private:
     QTimer alarm_timer_{this};
     QMediaPlayer player_{this};
     QAudioOutput audio_output_{this};
+    QString melody_;
 
 private:
     Ui::ArrowClock *ui;

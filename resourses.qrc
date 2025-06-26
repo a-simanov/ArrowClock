@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/sounds">
+        <file>sounds/signal-elektronnogo-budilnika-33304.mp3</file>
+    </qresource>
+</RCC>

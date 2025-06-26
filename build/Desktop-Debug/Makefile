@@ -56,7 +56,8 @@ SOURCES       = ../../dialogalarm.cpp \
 		../../dialogtheme.cpp \
 		../../dialogusertrime.cpp \
 		../../main.cpp \
-		../../arrowclock.cpp moc_arrowclock.cpp \
+		../../arrowclock.cpp qrc_resourses.cpp \
+		moc_arrowclock.cpp \
 		moc_dialogalarm.cpp \
 		moc_dialogtheme.cpp \
 		moc_dialogusertrime.cpp
@@ -65,6 +66,7 @@ OBJECTS       = dialogalarm.o \
 		dialogusertrime.o \
 		main.o \
 		arrowclock.o \
+		qrc_resourses.o \
 		moc_arrowclock.o \
 		moc_dialogalarm.o \
 		moc_dialogtheme.o \
@@ -227,6 +229,7 @@ Makefile: ../../Clock.pro /usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++/qmake.
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/lex.prf \
 		../../Clock.pro \
+		../../resourses.qrc \
 		/usr/lib/x86_64-linux-gnu/libQt6Multimedia.prl \
 		/usr/lib/x86_64-linux-gnu/libQt6Widgets.prl \
 		/usr/lib/x86_64-linux-gnu/libQt6Gui.prl \
@@ -303,6 +306,7 @@ Makefile: ../../Clock.pro /usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++/qmake.
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/yacc.prf:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/lex.prf:
 ../../Clock.pro:
+../../resourses.qrc:
 /usr/lib/x86_64-linux-gnu/libQt6Multimedia.prl:
 /usr/lib/x86_64-linux-gnu/libQt6Widgets.prl:
 /usr/lib/x86_64-linux-gnu/libQt6Gui.prl:
@@ -322,6 +326,7 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
+	$(COPY_FILE) --parents ../../resourses.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/data/dummy.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../../arrowclock.h ../../dialogalarm.h ../../dialogtheme.h ../../dialogusertrime.h $(DISTDIR)/
 	$(COPY_FILE) --parents ../../dialogalarm.cpp ../../dialogtheme.cpp ../../dialogusertrime.cpp ../../main.cpp ../../arrowclock.cpp $(DISTDIR)/
@@ -349,8 +354,14 @@ check: first
 
 benchmark: first
 
-compiler_rcc_make_all:
+compiler_rcc_make_all: qrc_resourses.cpp
 compiler_rcc_clean:
+	-$(DEL_FILE) qrc_resourses.cpp
+qrc_resourses.cpp: ../../resourses.qrc \
+		/usr/lib/qt6/libexec/rcc \
+		../../sounds/signal-elektronnogo-budilnika-33304.mp3
+	/usr/lib/qt6/libexec/rcc -name resourses ../../resourses.qrc -o qrc_resourses.cpp
+
 compiler_moc_predefs_make_all: moc_predefs.h
 compiler_moc_predefs_clean:
 	-$(DEL_FILE) moc_predefs.h
@@ -413,7 +424,7 @@ compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_uic_clean 
+compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_header_clean compiler_uic_clean 
 
 ####### Compile
 
@@ -443,6 +454,9 @@ arrowclock.o: ../../arrowclock.cpp ../../arrowclock.h \
 		../../dialogalarm.h \
 		ui_arrowclock.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o arrowclock.o ../../arrowclock.cpp
+
+qrc_resourses.o: qrc_resourses.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_resourses.o qrc_resourses.cpp
 
 moc_arrowclock.o: moc_arrowclock.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_arrowclock.o moc_arrowclock.cpp

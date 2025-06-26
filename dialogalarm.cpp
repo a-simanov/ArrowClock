@@ -6,6 +6,7 @@ DialogAlarm::DialogAlarm(QWidget *parent)
     , ui(new Ui::DialogAlarm)
 {
     ui->setupUi(this);
+    ui->btn_change_melody->setText(melody_);
 }
 
 DialogAlarm::~DialogAlarm()

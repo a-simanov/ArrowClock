@@ -35,7 +35,7 @@ private slots:
 private:
     Ui::DialogAlarm *ui;
     QTime alarm_time_;
-    QString melody_;
+    QString melody_ = "qrc:/sounds/sounds/signal-elektronnogo-budilnika-33304.mp3";
 };
 
 #endif // DIALOGALARM_H
