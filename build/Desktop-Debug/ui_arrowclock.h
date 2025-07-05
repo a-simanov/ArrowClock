@@ -13,6 +13,7 @@
 #include <QtGui/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QGridLayout>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
@@ -31,8 +32,9 @@ public:
     QAction *action_setAlarm;
     QWidget *centralwidget;
     QGridLayout *gridLayout;
-    QSpacerItem *verticalSpacer;
     QPushButton *btn_stop_alarm;
+    QSpacerItem *verticalSpacer;
+    QLabel *lbl_alarm;
     QStatusBar *statusbar;
     QMenuBar *menuBar;
     QMenu *menu;
@@ -54,14 +56,23 @@ public:
         centralwidget->setObjectName("centralwidget");
         gridLayout = new QGridLayout(centralwidget);
         gridLayout->setObjectName("gridLayout");
+        btn_stop_alarm = new QPushButton(centralwidget);
+        btn_stop_alarm->setObjectName("btn_stop_alarm");
+
+        gridLayout->addWidget(btn_stop_alarm, 2, 0, 1, 1);
+
         verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         gridLayout->addItem(verticalSpacer, 0, 0, 1, 1);
 
-        btn_stop_alarm = new QPushButton(centralwidget);
-        btn_stop_alarm->setObjectName("btn_stop_alarm");
+        lbl_alarm = new QLabel(centralwidget);
+        lbl_alarm->setObjectName("lbl_alarm");
+        QFont font;
+        font.setBold(true);
+        lbl_alarm->setFont(font);
+        lbl_alarm->setLayoutDirection(Qt::LeftToRight);
 
-        gridLayout->addWidget(btn_stop_alarm, 1, 0, 1, 1);
+        gridLayout->addWidget(lbl_alarm, 1, 0, 1, 1);
 
         ArrowClock->setCentralWidget(centralwidget);
         statusbar = new QStatusBar(ArrowClock);
@@ -91,6 +102,7 @@ public:
         action_dark_theme->setText(QCoreApplication::translate("ArrowClock", "\320\222\321\213\320\261\321\200\320\260\321\202\321\214 \321\202\320\265\320\274\321\203", nullptr));
         action_setAlarm->setText(QCoreApplication::translate("ArrowClock", "\320\243\321\201\321\202\320\260\320\275\320\276\320\262\320\270\321\202\321\214 \320\261\321\203\320\264\320\270\320\273\321\214\320\275\320\270\320\272", nullptr));
         btn_stop_alarm->setText(QCoreApplication::translate("ArrowClock", "\320\236\321\201\321\202\320\260\320\275\320\276\320\262\320\270\321\202\321\214 \320\261\321\203\320\264\320\270\320\273\321\214\320\275\320\270\320\272", nullptr));
+        lbl_alarm->setText(QCoreApplication::translate("ArrowClock", "<html><head/><body><p align=\"center\"><span style=\" font-size:16pt; font-weight:700;\">TextLabel</span></p></body></html>", nullptr));
         menu->setTitle(QCoreApplication::translate("ArrowClock", "\320\234\320\265\320\275\321\216", nullptr));
     } // retranslateUi
 

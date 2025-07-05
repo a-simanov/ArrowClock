@@ -14,6 +14,7 @@ ArrowClock::ArrowClock(QWidget *parent)
     ui->setupUi(this);
     ui->menuBar->hide();
     ui->btn_stop_alarm->hide();
+    ui->lbl_alarm->hide();
     this->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, &QMainWindow::customContextMenuRequested,
             this, &ArrowClock::slotMenuRequested);
@@ -237,6 +238,9 @@ void ArrowClock::setAlarm () {
     auto elapsed = now.secsTo(alarm_time);
     alarm_timer_.start(elapsed * 1000);
     alarm_timer_.setSingleShot(true);
+
+    ui->lbl_alarm->show();
+    ui->lbl_alarm->setText(QString("%1:%2:%3").arg(alarm_time.hour()).arg(alarm_time.minute()).arg(alarm_time.second()));
 }
 
 void ArrowClock::timerAlarm() {
