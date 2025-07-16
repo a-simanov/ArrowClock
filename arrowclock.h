@@ -13,6 +13,7 @@
 #include <QTime>
 #include <QMediaPlayer>
 #include <QAudioOutput>
+#include <fstream>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {

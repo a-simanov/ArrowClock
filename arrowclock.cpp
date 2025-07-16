@@ -173,6 +173,7 @@ void ArrowClock::startTicTack (){
 }
 
 void ArrowClock::setLightTheme () {
+    ui->lbl_alarm->setStyleSheet("color: black");
     QPalette lightPalette;
     lightPalette.setColor(QPalette::Window, Qt::lightGray);
     lightPalette.setColor(QPalette::WindowText, Qt::black);
@@ -192,6 +193,7 @@ void ArrowClock::setLightTheme () {
 }
 
 void ArrowClock::setDarkTheme () {
+    ui->lbl_alarm->setStyleSheet("color: white");
     QPalette darkPalette;
     darkPalette.setColor(QPalette::Window, QColor(53, 53, 53));
     darkPalette.setColor(QPalette::WindowText, Qt::white);
@@ -240,13 +242,20 @@ void ArrowClock::setAlarm () {
     alarm_timer_.setSingleShot(true);
 
     ui->lbl_alarm->show();
-    ui->lbl_alarm->setText(QString("%1:%2:%3").arg(alarm_time.hour()).arg(alarm_time.minute()).arg(alarm_time.second()));
+    ui->lbl_alarm->setText(QString("Будильник установлен на: %1:%2:%3").arg(alarm_time.hour(), 2, 10, QChar('0')).arg(alarm_time.minute(), 2, 10, QChar('0')).arg(alarm_time.second(), 2, 10, QChar('0')));
+    ui->lbl_alarm->setAlignment(Qt::AlignCenter);
+    if(theme_.ui->rb_light->isChecked()) {
+        ui->lbl_alarm->setStyleSheet("color: black");
+    } else {
+        ui->lbl_alarm->setStyleSheet("color: while");
+    }
 }
 
 void ArrowClock::timerAlarm() {
     player_.setSource(alarm_.getMelody());
     player_.play();
     ui->btn_stop_alarm->show();
+    ui->lbl_alarm->hide();
 }
 
 
