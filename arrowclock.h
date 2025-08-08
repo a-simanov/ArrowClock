@@ -13,7 +13,7 @@
 #include <QTime>
 #include <QMediaPlayer>
 #include <QAudioOutput>
-#include <fstream>
+#include <algorithm>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -23,9 +23,7 @@ QT_END_NAMESPACE
 
 const double STEP_SECOND_ARROW = 6.0;
 const double STEP_HOUR_ARROW = 30.0;
-const double LENGTH_HOUR_ARROW = 100.0;
-const double LENGTH_MINUTE_ARROW = 150.0;
-const double LENGTH_SECOND_ARROW = 120.0;
+
 
 struct Vector2D {
     double x;
@@ -82,6 +80,7 @@ private:
     QMediaPlayer player_{this};
     QAudioOutput audio_output_{this};
     QString melody_;
+    QColor color_ = QColor(Qt::darkGray);
 
 private:
     Ui::ArrowClock *ui;
@@ -93,9 +92,8 @@ private:
     void DrawSecondsArrow(QPainter& painter, Point2D center, double angle, double length);
     void DrawMinutesArrow(QPainter& painter, Point2D center, double angle, double length);
     void DrawHourArrow(QPainter& painter, Point2D center, double angle, double length);
-    void DrawDial(QPainter& painter, Point2D center, double angle, double length);
-    void drawNumbers (QPainter& painter, double x , double y);
-    void drawClockFace (QPainter& painter, Point2D center);
+    void drawNumbers (QPainter& painter, double size);
+    void drawClockFace (QPainter& painter, double size);
     void setLightTheme ();
     void setDarkTheme ();
     void changeTheme ();
@@ -108,6 +106,6 @@ private slots:
     void showHideChangeTime();
     void slotMenuRequested(QPoint pos);
     void dialogTheme ();
-    void on_btn_stop_alarm_clicked();
+    void on_btn_stop_alarm_clicked();    
 };
 #endif // ARROWCLOCK_H

@@ -42,75 +42,72 @@ ArrowClock::~ArrowClock()
 
 void ArrowClock::paintEvent (QPaintEvent *event) {
     QPainter painter(this);
-    QPen pen_second(QColorConstants::Svg::lightpink);
-    QPen pen_minute(QColorConstants::Svg::lightskyblue);
-    QPen pen_hour(QColorConstants::Svg::lightgreen);
-    if(theme_.ui->rb_light->isChecked()) {
+    double size = 0.75 * std::min(width()/2, height()/2);
+
+    bool is_dark = theme_.ui->rb_dark->isChecked();
+
+    if(!is_dark) {
         setLightTheme();
-        pen_second = QColorConstants::Svg::darkorange;
-        pen_minute = QColorConstants::Svg::darkblue;
-        pen_hour = QColorConstants::Svg::darkgreen;
-
-    } else if (theme_.ui->rb_dark->isChecked()){
+        color_ = QColor(Qt::darkGray);
+    } else {
         setDarkTheme();
-        pen_second = QColorConstants::Svg::lightpink;
-        pen_minute = QColorConstants::Svg::lightskyblue;
-        pen_hour = QColorConstants::Svg::lightgreen;
-
+        color_ = QColor(Qt::lightGray);
     };
+
+    QPen pen_second(color_);
+    QPen pen_minute(color_);
+    QPen pen_hour(color_);
     pen_minute.setWidth(3);
     pen_second.setWidth(2);
     pen_hour.setWidth(4);
+
     painter.setPen(pen_second);
-    Point2D center_ {width()/2.0, height()/2.0};
-    double center_x = width()/2;
-    double center_y = height()/2;
+    Point2D center {width()/2.0, height()/2.0};
     if(is_user_time_) {
-        DrawSecondsArrow (painter, center_, getSecondsAngle(now_), LENGTH_SECOND_ARROW);
+        DrawSecondsArrow (painter, center, getSecondsAngle(now_), size * 0.75);
     } else {
-        DrawSecondsArrow (painter, center_, getSecondsAngle(), LENGTH_SECOND_ARROW);
+        DrawSecondsArrow (painter, center, getSecondsAngle(), size * 0.75);
     }
+
     painter.setPen(pen_minute);
     if(is_user_time_) {
-        DrawMinutesArrow(painter, center_, getMinutesAngle(now_), LENGTH_MINUTE_ARROW);
+        DrawMinutesArrow(painter, center, getMinutesAngle(now_), size * 0.9);
     } else {
-        DrawMinutesArrow(painter, center_, getMinutesAngle(), LENGTH_MINUTE_ARROW);
+        DrawMinutesArrow(painter, center, getMinutesAngle(), size * 0.9);
     }
+
     painter.setPen(pen_hour);
     if(is_user_time_) {
-        DrawHourArrow(painter, center_, getHourAngle(now_), LENGTH_HOUR_ARROW);
+        DrawHourArrow(painter, center, getHourAngle(now_), size * 0.6);
     } else {
-        DrawHourArrow(painter, center_, getHourAngle(), LENGTH_HOUR_ARROW);
+        DrawHourArrow(painter, center, getHourAngle(), size * 0.6);
     }
-    drawClockFace (painter, center_);
-    drawNumbers(painter, center_x, center_y);
+    drawClockFace(painter, size);
+    drawNumbers(painter, size);
 };
 
-void ArrowClock::drawClockFace (QPainter& painter, Point2D center) {
-    for (int i = 1; i <= 12; i++) {
-        if (theme_.ui->rb_light->isChecked()) {
-            painter.setPen(Qt::black);
-            DrawDial(painter, center, (90.0 + 30.0 * i), 150.0);
-            painter.setPen(Qt::lightGray);
-            DrawDial(painter, center, (90.0 + 30.0 * i), 130.0);
+void ArrowClock::drawClockFace (QPainter& painter, double size) {
+    painter.translate(width()/2, height()/2);
+    painter.setPen(color_);
+    for (int i = 0 ;i < 60; ++i) {
+        if (i % 5 == 0) {
+            painter.drawLine(0, size, 0, 0.9 * size);
         } else {
-            painter.setPen(Qt::lightGray);
-            DrawDial(painter, center, (90.0 + 30.0 * i), 150.0);
-            painter.setPen(QColor(53, 53, 53));
-            DrawDial(painter, center, (90.0 + 30.0 * i), 130.0);
+            painter.drawLine(0, size, 0, 0.95 * size);
         }
+        painter.rotate(6.0);
     }
 }
 
-void  ArrowClock::drawNumbers (QPainter& painter, double x , double y) {
+void  ArrowClock::drawNumbers (QPainter& painter, double size) {
     painter.setPen(numbers_color);
     font.setPixelSize(20);
     font.setBold(true);
     painter.setFont(font);
-    painter.drawText(QPointF{x - 10.0 , y - 160}, QString("12"));
-    painter.drawText(QPointF{x + 160 , y + 6.0}, QString("3"));
-    painter.drawText(QPointF{x - 5.0 , y + 170.0}, QString("6"));
-    painter.drawText(QPointF{x - 170 , y + 6.0}, QString("9"));
+    painter.drawText(QPointF{-10.0, -size * 1.05}, QString("12"));
+    painter.drawText(QPointF{size * 1.05 , 6.0}, QString("3"));
+    painter.drawText(QPointF{-6.0 , size * 1.1}, QString("6"));
+    painter.drawText(QPointF{-size * 1.1 , 6.0}, QString("9"));
 }
 
 double ArrowClock::getSecondsAngle (QTime now) {
@@ -150,12 +147,6 @@ void ArrowClock::DrawHourArrow(QPainter& painter, Point2D center, double angle, 
     painter.drawLine(QPointF(center.x, center.y), QPointF(end.x, end.y));
 }
 
-void ArrowClock::DrawDial(QPainter& painter, Point2D center, double angle, double length) {
-    Vector2D lay = RotateVector(Vector2D{length, 0}, angle);
-    Point2D end = Add(center, lay);
-    painter.drawLine(QPointF(center.x, center.y), QPointF(end.x, end.y));
-}
-
 void ArrowClock::showHideChangeTime() {
     user_time_.show();
 }
@@ -177,19 +168,22 @@ void ArrowClock::setLightTheme () {
     QPalette lightPalette;
     lightPalette.setColor(QPalette::Window, Qt::lightGray);
     lightPalette.setColor(QPalette::WindowText, Qt::black);
-    lightPalette.setColor(QPalette::Base, QColorConstants::Svg::lightcoral);
-    lightPalette.setColor(QPalette::AlternateBase, QColorConstants::Svg::lightskyblue);
+    lightPalette.setColor(QPalette::Base, QColorConstants::Svg::darkgray);
+    lightPalette.setColor(QPalette::AlternateBase, QColorConstants::Svg::darkgray);
     lightPalette.setColor(QPalette::ToolTipBase, Qt::black);
     lightPalette.setColor(QPalette::ToolTipText, Qt::black);
     lightPalette.setColor(QPalette::Text, Qt::black);
-    lightPalette.setColor(QPalette::Button, QColorConstants::Svg::lightcoral);
+    lightPalette.setColor(QPalette::Button, QColorConstants::Svg::darkgray);
     lightPalette.setColor(QPalette::ButtonText, Qt::black);
     lightPalette.setColor(QPalette::BrightText, Qt::red);
-    lightPalette.setColor(QPalette::Link, QColorConstants::Svg::lightcoral);
-    lightPalette.setColor(QPalette::Highlight, QColorConstants::Svg::lightcoral);
+    lightPalette.setColor(QPalette::Link, QColorConstants::Svg::darkgray);
+    lightPalette.setColor(QPalette::Highlight, QColorConstants::Svg::darkgray);
     lightPalette.setColor(QPalette::HighlightedText, Qt::white);
     numbers_color = Qt::black;
     qApp->setPalette(lightPalette);
+    theme_.setPalette(lightPalette);
+    user_time_.setPalette(lightPalette);
+    alarm_.setPalette(lightPalette);
 }
 
 void ArrowClock::setDarkTheme () {
@@ -210,6 +204,9 @@ void ArrowClock::setDarkTheme () {
     darkPalette.setColor(QPalette::HighlightedText, Qt::black);
     numbers_color = Qt::lightGray;
     qApp->setPalette(darkPalette);
+    theme_.setPalette(darkPalette);
+    user_time_.setPalette(darkPalette);
+    alarm_.setPalette(darkPalette);
 }
 
 void ArrowClock::changeTheme () {
