@@ -1,4 +1,5 @@
 /build
-Clock.pro.user
-Clock.pro.user.ddb58a9
+*.user
+*.user.*
+*.user*.
 
