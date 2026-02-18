@@ -15,17 +15,11 @@ class DialogAlarm : public QDialog
 
 public:
     explicit DialogAlarm(QWidget *parent = nullptr);
-    ~DialogAlarm();
-    QTime getAlarmTime () {
-        return alarm_time_;
-    };
-
-    QString getMelody() {
-        return melody_;
-    }
+    ~DialogAlarm();    
 
 signals:
-    void getAlarm();
+    void getAlarmTime(const QTime& alarm_time);
+    void getAlarmMelody(const QString& melody);
 
 private slots:
     void on_buttonBox_accepted();
