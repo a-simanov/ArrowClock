@@ -99,7 +99,8 @@ private:
     void changeTheme ();
     void changeTime ();
     void dialogAlarm();
-    void setAlarm ();
+    void setAlarm (const QTime& time);
+    void SetMelody (const QString& melody);
     void timerAlarm();
 
 private slots:
