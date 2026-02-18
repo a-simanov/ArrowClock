@@ -17,7 +17,8 @@ DialogAlarm::~DialogAlarm()
 void DialogAlarm::on_buttonBox_accepted()
 {
     alarm_time_.setHMS(ui->sb_alarm_hours->value(), ui->sb_alarm_min->value(), ui->sb_alarm_sec->value());
-    emit getAlarm();
+    emit getAlarmTime(alarm_time_);
+    emit getAlarmMelody(melody_);
 }
 
 
