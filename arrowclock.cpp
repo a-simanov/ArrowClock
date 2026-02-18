@@ -27,7 +27,8 @@ ArrowClock::ArrowClock(QWidget *parent)
     connect(ui->action_setAlarm, &QAction::triggered, this, &ArrowClock::dialogAlarm);
     connect(&theme_, &DialogTheme::fW, this, &ArrowClock::changeTheme);
     connect(&user_time_, &DialogUserTrime::uT, this, &ArrowClock::changeTime);
-    connect(&alarm_, &DialogAlarm::getAlarm, this, &ArrowClock::setAlarm);
+    connect(&alarm_, &DialogAlarm::getAlarmTime, this, &ArrowClock::setAlarm);
+    connect(&alarm_, &DialogAlarm::getAlarmMelody, this, &ArrowClock::SetMelody);
     theme_.hide();
     user_time_.hide();
     setLightTheme ();
@@ -226,8 +227,8 @@ void ArrowClock::dialogAlarm() {
     alarm_.show();
 }
 
-void ArrowClock::setAlarm () {
-    QTime alarm_time = alarm_.getAlarmTime();
+void ArrowClock::setAlarm (const QTime& time) {
+    QTime alarm_time = time;
     QTime now;
     if (QTime::currentTime().hour() > 12) {
         now = QTime::currentTime().addSecs(-60 * 60 * 12);
@@ -245,11 +246,14 @@ void ArrowClock::setAlarm () {
         ui->lbl_alarm->setStyleSheet("color: black");
     } else {
         ui->lbl_alarm->setStyleSheet("color: while");
-    }
+    }    
+}
+
+void ArrowClock::SetMelody (const QString& melody) {
+    player_.setSource(melody);
 }
 
 void ArrowClock::timerAlarm() {
-    player_.setSource(alarm_.getMelody());
     player_.play();
     ui->btn_stop_alarm->show();
     ui->lbl_alarm->hide();
